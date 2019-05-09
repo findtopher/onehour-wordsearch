@@ -2,6 +2,7 @@
 Test the wordsearch module
 """
 #pylint: disable=redefined-outer-name
+import numpy
 import pytest
 from wordsearch.wordsearch import Matrix
 
@@ -10,26 +11,22 @@ from wordsearch.wordsearch import Matrix
 def testable_wordsearch():
     """Create a test matrix to be used in future tests"""
 
-    wordsearch = Matrix(3)
+    testable_matrix = numpy.asarray(
+        [['Y', 'U', 'M'],
+         ['A', 'O', 'B'],
+         ['M', 'F', 'C']]
+    )
 
-    wordsearch.matrix[0] = ['Y', 'U', 'M']
-    wordsearch.matrix[1] = ['A', 'O', 'B']
-    wordsearch.matrix[2] = ['M', 'F', 'C']
+    wordsearch = Matrix(3, testable_matrix)
 
     return wordsearch
 
 def test_new_matrix():
     """Test creating a new matrix and confirm there are no default values remaining"""
 
-    zeros_exist = False
     wordsearch = Matrix(5)
 
-    for _, row in enumerate(wordsearch.matrix):
-        if '0' in row:
-            zeros_exist = True
-
-    assert wordsearch.matrix.shape == (5, 5)
-    assert not zeros_exist
+    assert '0' not in wordsearch
 
 def test_finding_words_in_row(testable_wordsearch):
     """Test finding words in a row of a given matrix"""

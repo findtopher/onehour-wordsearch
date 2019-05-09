@@ -8,32 +8,36 @@ import numpy as np
 class Matrix:
     """Create a matrix of characters and find all the words included"""
 
-    def __init__(self, matrix_size):
-        self.matrix_size = matrix_size
-        self.matrix = self.new_matrix()
+    def __init__(self, matrix_size, matrix=None):
+        self._matrix_size = matrix_size
+        self._matrix = self._random_matrix()
+        if matrix is not None:
+            self._matrix = matrix
+        self._matrix_strings = self._matrix_to_strings()
 
     def __repr__(self):
         matrix_rows = []
 
-        for _, row in enumerate(self.matrix):
+        for _, row in enumerate(self._matrix):
             matrix_rows.append(" ".join(row))
 
         return "\n".join(matrix_rows)
 
     def __contains__(self, word):
 
-        if self._find_word_in_row(word) or self._find_word_in_column(word) or self._find_word_in_diagonal(word):
-            return True
+        for matrix_string in self._matrix_strings:
+            if self._find_word_in_string(matrix_string, word):
+                return True
 
         return False
 
-    def new_matrix(self):
-        """Return a matrix of uppercase characters of height and width self.matrix_size"""
+    def _random_matrix(self):
+        """Return a matrix of uppercase characters of height and width self._matrix_size"""
 
         uppercase_letters = string.ascii_uppercase
 
         # create a matrix with populated values of '0'
-        wordsearch_matrix = np.full((self.matrix_size, self.matrix_size), '0')
+        wordsearch_matrix = np.full((self._matrix_size, self._matrix_size), '0')
 
         # replace the '0's with random characters from uppercase_letters
         for row_idx, row in enumerate(wordsearch_matrix):
@@ -43,51 +47,54 @@ class Matrix:
 
         return wordsearch_matrix
 
-    def _find_word_in_row(self, word):
-        """Return True if the word exists in the rows of the matrix, False if it does not"""
+    def _matrix_to_strings(self):
+        """Return a list of strings that represent the rows, columns, and diagonals of the matrix"""
 
-        for _, row in enumerate(self.matrix):
-            search_string = "".join(row)
-            if self._find_word_in_string(search_string, word):
-                return True
+        matrix_strings = self._generate_row_strings()
+        matrix_strings.extend(self._generate_column_strings())
+        matrix_strings.extend(self._generate_diagonal_strings())
 
-        return False
+        return matrix_strings
 
-    def _find_word_in_column(self, word):
-        """Return True if the word exists in the columns of the matrix, False if it does not"""
+    def _generate_row_strings(self):
+        """Return a list of strings that represent the rows in the matrix"""
 
-        for col in range(self.matrix_size):
-            search_string = "".join(self.matrix[:, col])
-            if self._find_word_in_string(search_string, word):
-                return True
+        row_strings = []
 
-        return False
+        for _, row in enumerate(self._matrix):
+            row_strings.append("".join(row))
 
-    def _find_word_in_diagonal(self, word):
+        return row_strings
+
+    def _generate_column_strings(self):
+        """Return a list of strings that represent the columns in the matrix"""
+
+        column_strings = []
+
+        for col in range(self._matrix_size):
+            column_strings.append("".join(self._matrix[:, col]))
+
+        return column_strings
+
+    def _generate_diagonal_strings(self):
         """Return True if the word exists in the diagonals of the matrix, False if it does not"""
 
-        for diag in range(self.matrix_size):
-            search_string = "".join(np.diagonal(self.matrix, diag))
-            if self._find_word_in_string(search_string, word):
-                return True
+        diagonal_strings = []
 
-        for diag in range(-1, 0-self.matrix_size, -1):
-            search_string = "".join(np.diagonal(self.matrix, diag))
-            if self._find_word_in_string(search_string, word):
-                return True
+        for diag in range(self._matrix_size):
+            diagonal_strings.append("".join(np.diagonal(self._matrix, diag)))
 
-        flip_matrix = np.fliplr(self.matrix)
-        for diag in range(self.matrix_size):
-            search_string = "".join(np.diagonal(flip_matrix, diag))
-            if self._find_word_in_string(search_string, word):
-                return True
+        for diag in range(-1, 0-self._matrix_size, -1):
+            diagonal_strings.append("".join(np.diagonal(self._matrix, diag)))
 
-        for diag in range(-1, 0-self.matrix_size, -1):
-            search_string = "".join(np.diagonal(flip_matrix, diag))
-            if self._find_word_in_string(search_string, word):
-                return True
+        flip_matrix = np.fliplr(self._matrix)
+        for diag in range(self._matrix_size):
+            diagonal_strings.append("".join(np.diagonal(flip_matrix, diag)))
 
-        return False
+        for diag in range(-1, 0-self._matrix_size, -1):
+            diagonal_strings.append("".join(np.diagonal(flip_matrix, diag)))
+
+        return diagonal_strings
 
     def _find_word_in_string(self, search_string, word):
         """Return True if the word exists in the provided string"""
