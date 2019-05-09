@@ -26,7 +26,7 @@ class Matrix:
     def __contains__(self, word):
 
         for matrix_string in self._matrix_strings:
-            if self._find_word_in_string(matrix_string, word):
+            if (word in matrix_string) or (word in matrix_string[::-1]):
                 return True
 
         return False
@@ -95,11 +95,3 @@ class Matrix:
             diagonal_strings.append("".join(np.diagonal(flip_matrix, diag)))
 
         return diagonal_strings
-
-    def _find_word_in_string(self, search_string, word):
-        """Return True if the word exists in the provided string"""
-
-        if (word in search_string) or (word in search_string[::-1]):
-            return True
-
-        return False
