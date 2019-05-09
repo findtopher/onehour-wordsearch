@@ -11,7 +11,7 @@ Create a Virtual Environment using [pipenv](https://docs.pipenv.org/en/latest/in
 pipenv --three
 ```
 
-Install the PyTest requirement
+Install the numpy requirement
 ```
 pipenv install --ignore-pipfile
 ```
