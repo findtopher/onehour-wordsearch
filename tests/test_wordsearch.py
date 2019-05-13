@@ -28,6 +28,22 @@ def test_new_matrix():
 
     assert '0' not in wordsearch
 
+def test_bad_matrix_argument():
+    """Test creating a new Matrix with a bad matrix argument"""
+
+    with pytest.raises(TypeError) as exception:
+        assert Matrix(5, "not an array")
+    assert str(exception.value) == "Matrix argument matrix must be a numpy ndarray object"
+
+def test_mismatched_arguments():
+    """Test creating a new Matrix with a matrix_size that doesn't match the matrix"""
+
+    test_matrix = numpy.full((7, 7), 'A')
+
+    with pytest.raises(ValueError) as exception:
+        assert Matrix(5, test_matrix)
+    assert str(exception.value) == "Matrix argument matrix_size must match matrix argument"
+
 def test_finding_words_in_row(testable_wordsearch):
     """Test finding words in a row of a given matrix"""
 

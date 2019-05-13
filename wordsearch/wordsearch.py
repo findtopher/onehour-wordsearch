@@ -10,9 +10,17 @@ class Matrix:
 
     def __init__(self, matrix_size, matrix=None):
         self._matrix_size = matrix_size
-        self._matrix = self._random_matrix()
-        if matrix is not None:
-            self._matrix = matrix
+
+        if (matrix is not None) and (isinstance(matrix, np.ndarray)):
+            if matrix.shape == (self._matrix_size, self._matrix_size):
+                self._matrix = matrix
+            else:
+                raise ValueError('Matrix argument matrix_size must match matrix argument')
+        elif matrix is not None:
+            raise TypeError('Matrix argument matrix must be a numpy ndarray object')
+        else:
+            self._matrix = self._random_matrix()
+
         self._matrix_strings = self._matrix_to_strings()
 
     def __repr__(self):
