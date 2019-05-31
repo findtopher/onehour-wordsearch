@@ -85,7 +85,7 @@ class Matrix:
         return column_strings
 
     def _generate_diagonal_strings(self):
-        """Return True if the word exists in the diagonals of the matrix, False if it does not"""
+        """Return a list of strings that represent the diagionals in the matrix"""
 
         diagonal_strings = []
 
