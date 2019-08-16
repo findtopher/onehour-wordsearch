@@ -23,12 +23,12 @@ pipenv shell
 
 To create your own 15 x 15 matrix and print the words found
 ```
-python3 wordsearch/wordsearch.py 15 ./words.txt
+./play_wordgame 15 ./words.txt
 ```
 
 For help with the command-line arguments
 ```
-python3 wordsearch/wordsearch.py -h
+./play_wordgame -h
 ```
 
 To execute the tests
